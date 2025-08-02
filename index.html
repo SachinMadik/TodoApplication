@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        nav {
+            background-color: #4CAF50;
+            width: 100%;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        nav h1 {
+            margin: 0;
+            color: white;
+        }
+
+        #form {
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .todo-item {
+            background: #ffffff;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .todo-item div {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <h1>TODO APP</h1>
+        </div>
+    </nav>
+
+    <div id="form">
+        <input type="text" id="title" placeholder="Title" /><br>
+        <input type="text" id="description" placeholder="Description"/><br>
+        <button onclick="addTodo()">Add Todo</button>
+    </div>
+
+    <div id="container"></div>
+
+    <script>
+        let globalID = 1;
+
+        function markAsDone(todoId) {
+            const parent = document.getElementById(todoId);
+            parent.children[2].innerHTML = "Done!";
+            parent.children[2].disabled = true;
+            parent.children[2].style.backgroundColor = "#aaa";
+        }
+
+        function createChild(title, description, id) {
+            const child = document.createElement("div");
+            child.classList.add("todo-item");
+
+            const firstGrandParent = document.createElement("div");
+            firstGrandParent.innerHTML = `<strong>${title}</strong>`;
+
+            const secondGrandParent = document.createElement("div");
+            secondGrandParent.innerHTML = description;
+
+            const thirdGrandParent = document.createElement("button");
+            thirdGrandParent.innerHTML = "Mark as Done";
+            thirdGrandParent.setAttribute("onClick", `markAsDone(${id})`);
+
+            child.appendChild(firstGrandParent);
+            child.appendChild(secondGrandParent);
+            child.appendChild(thirdGrandParent);
+            child.setAttribute("id", id);
+            return child;
+        }
+
+        function addTodo() {
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+
+            if (title.trim() === "" || description.trim() === "") {
+                alert("Please enter both title and description!");
+                return;
+            }
+
+            const parent = document.getElementById("container");
+            parent.appendChild(createChild(title, description, globalID++));
+            document.getElementById("title").value = "";
+            document.getElementById("description").value = "";
+        }
+    </script>
+</body>
+</html>
